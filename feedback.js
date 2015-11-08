@@ -7,7 +7,7 @@
 
 	$.feedback = function(options) {
 
-		var PADDING = 10;
+		var TOP = 10;
 		var ZINDEX = 40000;
 		var OFFSET = 2;
 		var ADD = 6;
@@ -24,7 +24,7 @@
 			shadowColor:			'black',
 			shadowOffsetX:			1,
 			shadowOffsetY:			1,
-			shadowBlur:				10,
+			shadowBlur:				TOP,
 			lineJoin:				'bevel',
 			lineWidth:				3,
 			html2canvasURL:			'html2canvas.js',
@@ -43,9 +43,9 @@
 			screenshotStroke:		true,
 			highlightElement:		true,
 			initialBox:				false
-    }, options);
+		}, options);
 		var supportedBrowser = !!window.HTMLCanvasElement;
-		var isFeedbackButtonNative = settings.feedbackButton == '.feedback-btn';
+		var isFeedbackButtonNative = settings.feedbackButton === '.feedback-btn';
 		var _html2canvas = false;
 		if (supportedBrowser) {
 			if(isFeedbackButtonNative) {
@@ -74,12 +74,12 @@
 
 				$('body').append(tpl);
 
-				moduleStyle = {
+				var moduleStyle = {
 					'position':	'absolute',
 					'left': 	'0px',
 					'top':		'0px'
 				};
-				canvasAttr = {
+				var canvasAttr = {
 					'width': w,
 					'height': h
 				};
@@ -104,21 +104,21 @@
 							pos_y 	= $d.offset().top + drag_h - e.pageY,
 							pos_x 	= $d.offset().left + drag_w - e.pageX;
 						$d.css('z-index', ZINDEX).parents().on('mousemove', function(e) {
-							_top 	= e.pageY + pos_y - drag_h;
-							_left 	= e.pageX + pos_x - drag_w;
-							_bottom = drag_h - e.pageY;
-							_right 	= drag_w - e.pageX;
+							var _top 	= e.pageY + pos_y - drag_h;
+							var _left 	= e.pageX + pos_x - drag_w;
+							var _bottom = drag_h - e.pageY;
+							var _right 	= drag_w - e.pageX;
 
-							if (_left < 0) _left = 0;
-							if (_top < 0) _top = 0;
+							if (_left < 0) { _left = 0; }
+							if (_top < 0) { _top = 0; }
 							if (_right > $(window).width())
-								_left = $(window).width() - drag_w;
+								{ _left = $(window).width() - drag_w; }
 							if (_left > $(window).width() - drag_w)
-								_left = $(window).width() - drag_w;
+								{ _left = $(window).width() - drag_w; }
 							if (_bottom > $(document).height())
-								_top = $(document).height() - drag_h;
+								{ _top = $(document).height() - drag_h; }
 							if (_top > $(document).height() - drag_h)
-								_top = $(document).height() - drag_h;
+								{ _top = $(document).height() - drag_h; }
 
 							$('.feedback-draggable').offset({
 								top:	_top,
@@ -141,7 +141,7 @@
 
 				rect 		= {};
 				drag 		= false;
-				highlight 	= 1,
+				highlight 	= 1;
 				post		= {};
 
 				if (settings.postBrowserInfo) {
@@ -171,8 +171,9 @@
 					$('#feedback-page-structure').show();
 				}
 
-				if (!settings.postBrowserInfo && !settings.postURL && !settings.postHTML)
+				if (!settings.postBrowserInfo && !settings.postURL && !settings.postHTML) {
 					$('#feedback-additional-none').show();
+				}
 
 				$(document).on('mousedown', '#feedback-canvas', function(e) {
 					if (canDraw) {
@@ -192,10 +193,12 @@
 						var dtop	= rect.startY,
 							dleft	= rect.startX,
 							dwidth	= rect.w,
-							dheight	= rect.h;
+							dheight	= rect.h,
 							dtype	= 'highlight';
 
-						if (dwidth == 0 || dheight == 0) return;
+						if (dwidth === 0 || dheight === 0) {
+							return;
+						}
 
 						if (dwidth < 0) {
 							dleft 	+= dwidth;
@@ -206,13 +209,16 @@
 							dheight *= -1;
 						}
 
-						if (dtop + dheight > $(document).height())
+						if (dtop + dheight > $(document).height()) {
 							dheight = $(document).height() - dtop;
-						if (dleft + dwidth > $(document).width())
+						}
+						if (dleft + dwidth > $(document).width()) {
 							dwidth = $(document).width() - dleft;
+						}
 
-						if (highlight == 0)
+						if (highlight === 0) {
 							dtype = 'blackout';
+						}
 
 						$('#feedback-helpers').append('<div class="feedback-helper" data-type="' + dtype + '" data-time="' + Date.now() + '" style="position:absolute;top:' + dtop + 'px;left:' + dleft + 'px;width:' + dwidth + 'px;height:' + dheight + 'px;z-index:30000;"></div>');
 
@@ -233,24 +239,26 @@
 						ctx.fillStyle = 'rgba(102,102,102,0.5)';
 						ctx.fillRect(0, 0, $('#feedback-canvas').width(), $('#feedback-canvas').height());
 						$('.feedback-helper').each(function() {
-							if ($(this).attr('data-type') == 'highlight')
-								drawlines(ctx, parseInt($(this).css('left'), PADDING), parseInt($(this).css('top'), PADDING), $(this).width(), $(this).height());
+							if ($(this).attr('data-type') === 'highlight') {
+								drawlines(ctx, parseInt($(this).css('left'), TOP), parseInt($(this).css('top'), TOP), $(this).width(), $(this).height());
+							}
 						});
-						if (highlight==1) {
+						if (highlight===1) {
 							drawlines(ctx, rect.startX, rect.startY, rect.w, rect.h);
 							ctx.clearRect(rect.startX, rect.startY, rect.w, rect.h);
 						}
 						$('.feedback-helper').each(function() {
-							if ($(this).attr('data-type') == 'highlight')
-								ctx.clearRect(parseInt($(this).css('left'), PADDING), parseInt($(this).css('top'), PADDING), $(this).width(), $(this).height());
-						});
-						$('.feedback-helper').each(function() {
-							if ($(this).attr('data-type') == 'blackout') {
-								ctx.fillStyle = 'rgba(0,0,0,1)';
-								ctx.fillRect(parseInt($(this).css('left'), PADDING), parseInt($(this).css('top'), PADDING), $(this).width(), $(this).height())
+							if ($(this).attr('data-type') === 'highlight') {
+								ctx.clearRect(parseInt($(this).css('left'), TOP), parseInt($(this).css('top'), TOP), $(this).width(), $(this).height());
 							}
 						});
-						if (highlight == 0) {
+						$('.feedback-helper').each(function() {
+							if ($(this).attr('data-type') === 'blackout') {
+								ctx.fillStyle = 'rgba(0,0,0,1)';
+								ctx.fillRect(parseInt($(this).css('left'), TOP), parseInt($(this).css('top'), TOP), $(this).width(), $(this).height());
+							}
+						});
+						if (highlight === 0) {
 							ctx.fillStyle = 'rgba(0,0,0,0.5)';
 							ctx.fillRect(rect.startX, rect.startY, rect.w, rect.h);
 						}
@@ -264,17 +272,19 @@
 
 					$(document).on('mousemove click', '#feedback-canvas',function(e) {
 						if (canDraw) {
+							var dtype;
 							redraw(ctx);
 							tmpHighlighted = [];
 
 							$('#feedback-canvas').css('cursor', 'crosshair');
 
 							$('* :not(body,script,iframe,div,section,.feedback-btn,#feedback-module *)').each(function(){
-								if ($(this).attr('data-highlighted') === 'true')
+								if ($(this).attr('data-highlighted') === 'true') {
 									return;
+								}
 
-								if (e.pageX > $(this).offset().left && e.pageX < $(this).offset().left + $(this).width() && e.pageY > $(this).offset().top + parseInt($(this).css('padding-top'), PADDING) && e.pageY < $(this).offset().top + $(this).height() + parseInt($(this).css('padding-top'), PADDING)) {
-										tmpHighlighted.push($(this));
+								if (e.pageX > $(this).offset().left && e.pageX < $(this).offset().left + $(this).width() && e.pageY > $(this).offset().top + parseInt($(this).css('padding-top'), TOP) && e.pageY < $(this).offset().top + $(this).height() + parseInt($(this).css('padding-top'), TOP)) {
+									tmpHighlighted.push($(this));
 								}
 							});
 
@@ -285,34 +295,35 @@
 
 								var _x = $toHighlight.offset().left - OFFSET,
 									_y = $toHighlight.offset().top - OFFSET,
-									_w = $toHighlight.width() + parseInt($toHighlight.css('padding-left'), PADDING) + parseInt($toHighlight.css('padding-right'), PADDING) + ADD,
-									_h = $toHighlight.height() + parseInt($toHighlight.css('padding-top'), PADDING) + parseInt($toHighlight.css('padding-bottom'), PADDING) + ADD;
+									_w = $toHighlight.width() + parseInt($toHighlight.css('padding-left'), TOP) + parseInt($toHighlight.css('padding-right'), TOP) + ADD,
+									_h = $toHighlight.height() + parseInt($toHighlight.css('padding-top'), TOP) + parseInt($toHighlight.css('padding-bottom'), TOP) + ADD;
 
-								if (highlight == 1) {
+								if (highlight === 1) {
 									drawlines(ctx, _x, _y, _w, _h);
 									ctx.clearRect(_x, _y, _w, _h);
 									dtype = 'highlight';
 								}
 
 								$('.feedback-helper').each(function() {
-									if ($(this).attr('data-type') == 'highlight')
-										ctx.clearRect(parseInt($(this).css('left'), PADDING), parseInt($(this).css('top'), PADDING), $(this).width(), $(this).height());
+									if ($(this).attr('data-type') === 'highlight') {
+										ctx.clearRect(parseInt($(this).css('left'), TOP), parseInt($(this).css('top'), TOP), $(this).width(), $(this).height());
+									}
 								});
 
-								if (highlight == 0) {
+								if (highlight === 0) {
 									dtype = 'blackout';
 									ctx.fillStyle = 'rgba(0,0,0,0.5)';
 									ctx.fillRect(_x, _y, _w, _h);
 								}
 
 								$('.feedback-helper').each(function() {
-									if ($(this).attr('data-type') == 'blackout') {
+									if ($(this).attr('data-type') === 'blackout') {
 										ctx.fillStyle = 'rgba(0,0,0,1)';
-										ctx.fillRect(parseInt($(this).css('left'), PADDING), parseInt($(this).css('top'), PADDING), $(this).width(), $(this).height());
+										ctx.fillRect(parseInt($(this).css('left'), TOP), parseInt($(this).css('top'), TOP), $(this).width(), $(this).height());
 									}
 								});
 
-								if (e.type == 'click' && e.pageX == rect.startX && e.pageY == rect.startY) {
+								if (e.type === 'click' && e.pageX === rect.startX && e.pageY === rect.startY) {
 									$('#feedback-helpers').append('<div class="feedback-helper" data-highlight-id="' + hidx + '" data-type="' + dtype + '" data-time="' + Date.now() + '" style="position:absolute;top:' + _y + 'px;left:' + _x + 'px;width:' + _w + 'px;height:' + _h + 'px;z-index:30000;"></div>');
 									highlighted.push(hidx);
 									++hidx;
@@ -345,8 +356,9 @@
 				});
 
 				$(document).on('mouseenter mouseleave', '.feedback-helper', function(e) {
-					if (drag)
+					if (drag) {
 						return;
+					}
 
 					rect.w = 0;
 					rect.h = 0;
@@ -360,33 +372,36 @@
 							'left' 	: $(this).width() - ($(this).find('#feedback-close').width() / OFFSET) + 'px'
 						});
 
-						if ($(this).attr('data-type') == 'blackout') {
+						if ($(this).attr('data-type') === 'blackout') {
 							/* redraw white */
 							ctx.clearRect(0, 0, $('#feedback-canvas').width(), $('#feedback-canvas').height());
 							ctx.fillStyle = 'rgba(102,102,102,0.5)';
 							ctx.fillRect(0, 0, $('#feedback-canvas').width(), $('#feedback-canvas').height());
 							$('.feedback-helper').each(function() {
-								if ($(this).attr('data-type') == 'highlight')
-									drawlines(ctx, parseInt($(this).css('left'), PADDING), parseInt($(this).css('top'), PADDING), $(this).width(), $(this).height());
+								if ($(this).attr('data-type') === 'highlight') {
+									drawlines(ctx, parseInt($(this).css('left'), TOP), parseInt($(this).css('top'), TOP), $(this).width(), $(this).height());
+								}
 							});
 							$('.feedback-helper').each(function() {
-								if ($(this).attr('data-type') == 'highlight')
-									ctx.clearRect(parseInt($(this).css('left'), PADDING), parseInt($(this).css('top'), PADDING), $(this).width(), $(this).height());
+								if ($(this).attr('data-type') === 'highlight') {
+									ctx.clearRect(parseInt($(this).css('left'), TOP), parseInt($(this).css('top'), TOP), $(this).width(), $(this).height());
+								}
 							});
 
-							ctx.clearRect(parseInt($(this).css('left'), PADDING), parseInt($(this).css('top'), PADDING), $(this).width(), $(this).height())
+							ctx.clearRect(parseInt($(this).css('left'), TOP), parseInt($(this).css('top'), TOP), $(this).width(), $(this).height());
 							ctx.fillStyle = 'rgba(0,0,0,0.75)';
-							ctx.fillRect(parseInt($(this).css('left'), PADDING), parseInt($(this).css('top'), PADDING), $(this).width(), $(this).height());
+							ctx.fillRect(parseInt($(this).css('left'), TOP), parseInt($(this).css('top'), TOP), $(this).width(), $(this).height());
 
-							ignore = $(this).attr('data-time');
+							var ignore = $(this).attr('data-time');
 
 							/* redraw black */
 							$('.feedback-helper').each(function() {
-								if ($(this).attr('data-time') == ignore)
+								if ($(this).attr('data-time') === ignore){
 									return true;
-								if ($(this).attr('data-type') == 'blackout') {
+								}
+								if ($(this).attr('data-type') === 'blackout') {
 									ctx.fillStyle = 'rgba(0,0,0,1)';
-									ctx.fillRect(parseInt($(this).css('left'), PADDING), parseInt($(this).css('top'), PADDING), $(this).width(), $(this).height())
+									ctx.fillRect(parseInt($(this).css('left'), TOP), parseInt($(this).css('top'), TOP), $(this).width(), $(this).height());
 								}
 							});
 						}
@@ -394,20 +409,23 @@
 					else {
 						$(this).css('z-index','30000');
 						$(this).children().remove();
-						if ($(this).attr('data-type') == 'blackout') {
+						if ($(this).attr('data-type') === 'blackout') {
 							redraw(ctx);
 						}
 					}
 				});
 
 				$(document).on('click', '#feedback-close', function() {
-					if (settings.highlightElement && $(this).parent().attr('data-highlight-id'))
-						var _hidx = $(this).parent().attr('data-highlight-id');
+					var _hidx;
+					if (settings.highlightElement && $(this).parent().attr('data-highlight-id')) {
+						_hidx = $(this).parent().attr('data-highlight-id');
+					}
 
 					$(this).parent().remove();
 
-					if (settings.highlightElement && _hidx)
+					if (settings.highlightElement && _hidx) {
 						$('[data-highlight-id="' + _hidx + '"]').removeAttr('data-highlighted').removeAttr('data-highlight-id');
+					}
 
 					redraw(ctx);
 				});
@@ -417,8 +435,9 @@
 				});
 
 				$(document).on('keyup', function(e) {
-					if (e.keyCode == 27)
+					if (e.keyCode === 27) {
 						close();
+					}
 				});
 
 				$(document).on('selectstart dragstart', document, function(e) {
@@ -461,8 +480,8 @@
 							if (!settings.screenshotStroke) {
 								redraw(ctx);
 							}
-							_canvas = $('<canvas id="feedback-canvas-tmp" width="'+ w +'" height="'+ dh +'"/>').hide().appendTo('body');
-							_ctx = _canvas.get(0).getContext('2d');
+							var _canvas = $('<canvas id="feedback-canvas-tmp" width="'+ w +'" height="'+ dh +'"/>').hide().appendTo('body');
+							var _ctx = _canvas.get(0).getContext('2d');
 							_ctx.drawImage(canvas, 0, sy, w, dh, 0, 0, w, dh);
 							img = _canvas.get(0).toDataURL();
 							$(document).scrollTop(sy);
@@ -487,7 +506,7 @@
 					});
 				});
 
-				$(document).on('click', '#feedback-overview-back', function(e) {
+				$(document).on('click', '#feedback-overview-back', function() {
 					canDraw = true;
 					$('#feedback-canvas').css('cursor', 'crosshair');
 					$('#feedback-overview').hide();
@@ -498,8 +517,9 @@
 
 				$(document).on('keyup', '#feedback-note-tmp,#feedback-overview-note', function(e) {
 					var tx;
-					if (e.target.id === 'feedback-note-tmp')
+					if (e.target.id === 'feedback-note-tmp') {
 						tx = $('#feedback-note-tmp').val();
+					}
 					else {
 						tx = $('#feedback-overview-note').val();
 						$('#feedback-note-tmp').val(tx);
@@ -517,7 +537,7 @@
 
 						post.img = img;
 						post.note = $('#feedback-note').val();
-                        var data = {feedback: JSON.stringify(post)};
+						var data = {feedback: JSON.stringify(post)};
 						$.ajax({
 							url: settings.ajaxURL,
 							dataType: 'json',
@@ -538,34 +558,34 @@
 			});
 		}
 
-		function close() {
-			canDraw = false;
-			$(document).off('mouseenter mouseleave', '.feedback-helper');
-			$(document).off('mouseup keyup');
-			$(document).off('mousedown', '.feedback-setblackout');
-			$(document).off('mousedown', '.feedback-sethighlight');
-			$(document).off('mousedown click', '#feedback-close');
-			$(document).off('mousedown', '#feedback-canvas');
-			$(document).off('click', '#feedback-highlighter-next');
-			$(document).off('click', '#feedback-highlighter-back');
-			$(document).off('click', '#feedback-welcome-next');
-			$(document).off('click', '#feedback-overview-back');
-			$(document).off('mouseleave', 'body');
-			$(document).off('mouseenter', '.feedback-helper');
-			$(document).off('selectstart dragstart', document);
-			$('#feedback-module').off('click', '.feedback-wizard-close,.feedback-close-btn');
-			$(document).off('click', '#feedback-submit');
-
-			if (settings.highlightElement) {
-				$(document).off('click', '#feedback-canvas');
-				$(document).off('mousemove', '#feedback-canvas');
-			}
-			$('[data-highlighted="true"]').removeAttr('data-highlight-id').removeAttr('data-highlighted');
-			$('#feedback-module').remove();
-			$('.feedback-btn').show();
-
-			settings.onClose.call(this);
-		}
+		// function close() {
+		// 	var canDraw = false;
+		// 	$(document).off('mouseenter mouseleave', '.feedback-helper');
+		// 	$(document).off('mouseup keyup');
+		// 	$(document).off('mousedown', '.feedback-setblackout');
+		// 	$(document).off('mousedown', '.feedback-sethighlight');
+		// 	$(document).off('mousedown click', '#feedback-close');
+		// 	$(document).off('mousedown', '#feedback-canvas');
+		// 	$(document).off('click', '#feedback-highlighter-next');
+		// 	$(document).off('click', '#feedback-highlighter-back');
+		// 	$(document).off('click', '#feedback-welcome-next');
+		// 	$(document).off('click', '#feedback-overview-back');
+		// 	$(document).off('mouseleave', 'body');
+		// 	$(document).off('mouseenter', '.feedback-helper');
+		// 	$(document).off('selectstart dragstart', document);
+		// 	$('#feedback-module').off('click', '.feedback-wizard-close,.feedback-close-btn');
+		// 	$(document).off('click', '#feedback-submit');
+		//
+		// 	if (settings.highlightElement) {
+		// 		$(document).off('click', '#feedback-canvas');
+		// 		$(document).off('mousemove', '#feedback-canvas');
+		// 	}
+		// 	$('[data-highlighted="true"]').removeAttr('data-highlight-id').removeAttr('data-highlighted');
+		// 	$('#feedback-module').remove();
+		// 	$('.feedback-btn').show();
+		//
+		// 	settings.onClose.call(this);
+		// }
 
 		function redraw(ctx, border) {
 			border = typeof border !== 'undefined' ? border : true;
@@ -573,18 +593,21 @@
 			ctx.fillStyle = 'rgba(102,102,102,0.5)';
 			ctx.fillRect(0, 0, $('#feedback-canvas').width(), $('#feedback-canvas').height());
 			$('.feedback-helper').each(function() {
-				if ($(this).attr('data-type') == 'highlight')
-					if (border)
-						drawlines(ctx, parseInt($(this).css('left'), PADDING), parseInt($(this).css('top'), PADDING), $(this).width(), $(this).height());
+				if ($(this).attr('data-type') === 'highlight') {
+					if (border) {
+						drawlines(ctx, parseInt($(this).css('left'), TOP), parseInt($(this).css('top'), TOP), $(this).width(), $(this).height());
+					}
+				}
 			});
 			$('.feedback-helper').each(function() {
-				if ($(this).attr('data-type') == 'highlight')
-					ctx.clearRect(parseInt($(this).css('left'), PADDING), parseInt($(this).css('top'), PADDING), $(this).width(), $(this).height());
+				if ($(this).attr('data-type') === 'highlight') {
+					ctx.clearRect(parseInt($(this).css('left'), TOP), parseInt($(this).css('top'), TOP), $(this).width(), $(this).height());
+				}
 			});
 			$('.feedback-helper').each(function() {
-				if ($(this).attr('data-type') == 'blackout') {
+				if ($(this).attr('data-type') === 'blackout') {
 					ctx.fillStyle = 'rgba(0,0,0,1)';
-					ctx.fillRect(parseInt($(this).css('left'), PADDING), parseInt($(this).css('top'), PADDING), $(this).width(), $(this).height());
+					ctx.fillRect(parseInt($(this).css('left'), TOP), parseInt($(this).css('top'), TOP), $(this).width(), $(this).height());
 				}
 			});
 		}
