@@ -7,7 +7,12 @@
 
 	$.feedback = function(options) {
 
-    var settings = $.extend({
+		var PADDING = 10;
+		var ZINDEX = 4000;
+		var OFFSET = 2;
+		var ADD = 6;
+
+		var settings = $.extend({
 			ajaxURL: 				'',
 			postBrowserInfo: 		true,
 			postHTML:				true,
@@ -98,7 +103,7 @@
 							drag_w 	= $d.outerWidth(),
 							pos_y 	= $d.offset().top + drag_h - e.pageY,
 							pos_x 	= $d.offset().left + drag_w - e.pageX;
-						$d.css('z-index', 40000).parents().on('mousemove', function(e) {
+						$d.css('z-index', ZINDEX).parents().on('mousemove', function(e) {
 							_top 	= e.pageY + pos_y - drag_h;
 							_left 	= e.pageX + pos_x - drag_w;
 							_bottom = drag_h - e.pageY;
@@ -229,7 +234,7 @@
 						ctx.fillRect(0, 0, $('#feedback-canvas').width(), $('#feedback-canvas').height());
 						$('.feedback-helper').each(function() {
 							if ($(this).attr('data-type') == 'highlight')
-								drawlines(ctx, parseInt($(this).css('left'), 10), parseInt($(this).css('top'), 10), $(this).width(), $(this).height());
+								drawlines(ctx, parseInt($(this).css('left'), PADDING), parseInt($(this).css('top'), PADDING), $(this).width(), $(this).height());
 						});
 						if (highlight==1) {
 							drawlines(ctx, rect.startX, rect.startY, rect.w, rect.h);
@@ -237,12 +242,12 @@
 						}
 						$('.feedback-helper').each(function() {
 							if ($(this).attr('data-type') == 'highlight')
-								ctx.clearRect(parseInt($(this).css('left'), 10), parseInt($(this).css('top'), 10), $(this).width(), $(this).height());
+								ctx.clearRect(parseInt($(this).css('left'), PADDING), parseInt($(this).css('top'), PADDING), $(this).width(), $(this).height());
 						});
 						$('.feedback-helper').each(function() {
 							if ($(this).attr('data-type') == 'blackout') {
 								ctx.fillStyle = 'rgba(0,0,0,1)';
-								ctx.fillRect(parseInt($(this).css('left'), 10), parseInt($(this).css('top'), 10), $(this).width(), $(this).height())
+								ctx.fillRect(parseInt($(this).css('left'), PADDING), parseInt($(this).css('top'), PADDING), $(this).width(), $(this).height())
 							}
 						});
 						if (highlight == 0) {
@@ -268,7 +273,7 @@
 								if ($(this).attr('data-highlighted') === 'true')
 									return;
 
-								if (e.pageX > $(this).offset().left && e.pageX < $(this).offset().left + $(this).width() && e.pageY > $(this).offset().top + parseInt($(this).css('padding-top'), 10) && e.pageY < $(this).offset().top + $(this).height() + parseInt($(this).css('padding-top'), 10)) {
+								if (e.pageX > $(this).offset().left && e.pageX < $(this).offset().left + $(this).width() && e.pageY > $(this).offset().top + parseInt($(this).css('padding-top'), PADDING) && e.pageY < $(this).offset().top + $(this).height() + parseInt($(this).css('padding-top'), PADDING)) {
 										tmpHighlighted.push($(this));
 								}
 							});
@@ -278,10 +283,10 @@
 							if ($toHighlight && !drag) {
 								$('#feedback-canvas').css('cursor', 'pointer');
 
-								var _x = $toHighlight.offset().left - 2,
-									_y = $toHighlight.offset().top - 2,
-									_w = $toHighlight.width() + parseInt($toHighlight.css('padding-left'), 10) + parseInt($toHighlight.css('padding-right'), 10) + 6,
-									_h = $toHighlight.height() + parseInt($toHighlight.css('padding-top'), 10) + parseInt($toHighlight.css('padding-bottom'), 10) + 6;
+								var _x = $toHighlight.offset().left - OFFSET,
+									_y = $toHighlight.offset().top - OFFSET,
+									_w = $toHighlight.width() + parseInt($toHighlight.css('padding-left'), PADDING) + parseInt($toHighlight.css('padding-right'), PADDING) + ADD,
+									_h = $toHighlight.height() + parseInt($toHighlight.css('padding-top'), PADDING) + parseInt($toHighlight.css('padding-bottom'), PADDING) + ADD;
 
 								if (highlight == 1) {
 									drawlines(ctx, _x, _y, _w, _h);
@@ -291,7 +296,7 @@
 
 								$('.feedback-helper').each(function() {
 									if ($(this).attr('data-type') == 'highlight')
-										ctx.clearRect(parseInt($(this).css('left'), 10), parseInt($(this).css('top'), 10), $(this).width(), $(this).height());
+										ctx.clearRect(parseInt($(this).css('left'), PADDING), parseInt($(this).css('top'), PADDING), $(this).width(), $(this).height());
 								});
 
 								if (highlight == 0) {
@@ -303,7 +308,7 @@
 								$('.feedback-helper').each(function() {
 									if ($(this).attr('data-type') == 'blackout') {
 										ctx.fillStyle = 'rgba(0,0,0,1)';
-										ctx.fillRect(parseInt($(this).css('left'), 10), parseInt($(this).css('top'), 10), $(this).width(), $(this).height());
+										ctx.fillRect(parseInt($(this).css('left'), PADDING), parseInt($(this).css('top'), PADDING), $(this).width(), $(this).height());
 									}
 								});
 
@@ -348,11 +353,11 @@
 
 					if (e.type === 'mouseenter') {
 						$(this).css('z-index', '30001');
-						$(this).append('<div class="feedback-helper-inner" style="width:' + ($(this).width() - 2) + 'px;height:' + ($(this).height() - 2) + 'px;position:absolute;margin:1px;"></div>');
+						$(this).append('<div class="feedback-helper-inner" style="width:' + ($(this).width() - OFFSET) + 'px;height:' + ($(this).height() - OFFSET) + 'px;position:absolute;margin:1px;"></div>');
 						$(this).append('<div id="feedback-close"></div>');
 						$(this).find('#feedback-close').css({
-							'top' 	: -1 * ($(this).find('#feedback-close').height() / 2) + 'px',
-							'left' 	: $(this).width() - ($(this).find('#feedback-close').width() / 2) + 'px'
+							'top' 	: -1 * ($(this).find('#feedback-close').height() / OFFSET) + 'px',
+							'left' 	: $(this).width() - ($(this).find('#feedback-close').width() / OFFSET) + 'px'
 						});
 
 						if ($(this).attr('data-type') == 'blackout') {
@@ -362,16 +367,16 @@
 							ctx.fillRect(0, 0, $('#feedback-canvas').width(), $('#feedback-canvas').height());
 							$('.feedback-helper').each(function() {
 								if ($(this).attr('data-type') == 'highlight')
-									drawlines(ctx, parseInt($(this).css('left'), 10), parseInt($(this).css('top'), 10), $(this).width(), $(this).height());
+									drawlines(ctx, parseInt($(this).css('left'), PADDING), parseInt($(this).css('top'), PADDING), $(this).width(), $(this).height());
 							});
 							$('.feedback-helper').each(function() {
 								if ($(this).attr('data-type') == 'highlight')
-									ctx.clearRect(parseInt($(this).css('left'), 10), parseInt($(this).css('top'), 10), $(this).width(), $(this).height());
+									ctx.clearRect(parseInt($(this).css('left'), PADDING), parseInt($(this).css('top'), PADDING), $(this).width(), $(this).height());
 							});
 
-							ctx.clearRect(parseInt($(this).css('left'), 10), parseInt($(this).css('top'), 10), $(this).width(), $(this).height())
+							ctx.clearRect(parseInt($(this).css('left'), PADDING), parseInt($(this).css('top'), PADDING), $(this).width(), $(this).height())
 							ctx.fillStyle = 'rgba(0,0,0,0.75)';
-							ctx.fillRect(parseInt($(this).css('left'), 10), parseInt($(this).css('top'), 10), $(this).width(), $(this).height());
+							ctx.fillRect(parseInt($(this).css('left'), PADDING), parseInt($(this).css('top'), PADDING), $(this).width(), $(this).height());
 
 							ignore = $(this).attr('data-time');
 
@@ -381,7 +386,7 @@
 									return true;
 								if ($(this).attr('data-type') == 'blackout') {
 									ctx.fillStyle = 'rgba(0,0,0,1)';
-									ctx.fillRect(parseInt($(this).css('left'), 10), parseInt($(this).css('top'), 10), $(this).width(), $(this).height())
+									ctx.fillRect(parseInt($(this).css('left'), PADDING), parseInt($(this).css('top'), PADDING), $(this).width(), $(this).height())
 								}
 							});
 						}
@@ -570,16 +575,16 @@
 			$('.feedback-helper').each(function() {
 				if ($(this).attr('data-type') == 'highlight')
 					if (border)
-						drawlines(ctx, parseInt($(this).css('left'), 10), parseInt($(this).css('top'), 10), $(this).width(), $(this).height());
+						drawlines(ctx, parseInt($(this).css('left'), PADDING), parseInt($(this).css('top'), PADDING), $(this).width(), $(this).height());
 			});
 			$('.feedback-helper').each(function() {
 				if ($(this).attr('data-type') == 'highlight')
-					ctx.clearRect(parseInt($(this).css('left'), 10), parseInt($(this).css('top'), 10), $(this).width(), $(this).height());
+					ctx.clearRect(parseInt($(this).css('left'), PADDING), parseInt($(this).css('top'), PADDING), $(this).width(), $(this).height());
 			});
 			$('.feedback-helper').each(function() {
 				if ($(this).attr('data-type') == 'blackout') {
 					ctx.fillStyle = 'rgba(0,0,0,1)';
-					ctx.fillRect(parseInt($(this).css('left'), 10), parseInt($(this).css('top'), 10), $(this).width(), $(this).height());
+					ctx.fillRect(parseInt($(this).css('left'), PADDING), parseInt($(this).css('top'), PADDING), $(this).width(), $(this).height());
 				}
 			});
 		}
