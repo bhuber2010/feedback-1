@@ -139,10 +139,10 @@
 				ctx.fillStyle = 'rgba(102,102,102,0.5)';
 				ctx.fillRect(0, 0, $('#feedback-canvas').width(), $('#feedback-canvas').height());
 
-				rect 		= {};
-				drag 		= false;
-				highlight 	= 1;
-				post		= {};
+				var rect 		= {};
+				var drag 		= false;
+				var highlight 	= 1;
+				var post		= {};
 
 				if (settings.postBrowserInfo) {
 					post.browser 				= {};
