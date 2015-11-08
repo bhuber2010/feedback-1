@@ -1,0 +1,25 @@
+{
+	"bitwise": true,
+	"elision": true,
+	"browser": true,
+	"curly": true,
+	"eqeqeq": true,
+	"eqnull": true,
+	"esnext": true,
+	"immed": true,
+	"jquery": true,
+	"latedef": true,
+	"newcap": true,
+	"noarg": true,
+	"node": true,
+	"strict": false,
+	"trailing": true,
+	"undef": true,
+	"unused": true,
+	"indent": 1,
+	"smarttabs": true,
+	"globals": {
+		"jquery": true,
+		"html2canvas": true
+	}
+}
