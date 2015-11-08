@@ -1,0 +1,49 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<title>Feedback QUnit Test Suite</title>
+
+	<link rel="stylesheet" href="vendor/qunit.css" type="text/css" media="screen" />
+
+</head>
+<body>
+	<div>
+		<h1 id="qunit-header">Chrysler Capital QUnit Test Suite</h1>
+		<h2 id="qunit-banner"></h2>
+		<h2 id="qunit-userAgent"></h2>
+		<ol id="qunit-tests"></ol>
+
+		<div id="calc-monthly-payment">
+			<input id="loanAmt"></input>
+			<input id="loanTerm"></input>
+			<input id="apr"></input>
+			<input id="MonthlyPymt"></input>
+		</div>
+
+		<div id="calc-loan-amount">
+			<input id="MonthlyPymt1"></input>
+			<input id="txtLoanAmt"></input>
+			<input id="apr1"></input>
+			<input id="loanTerm1"></input>
+			<input id="txtApr"></input>
+			<input id="loanAmt1"></input>
+			<input id="txtLoanTerm"></input>
+			<input id="txtMonthlyPymt"></input>
+		</div>
+
+		<input id="txtLoanAmt1"></input>
+		<input id="txtApr1"></input>
+		<input id="txtLoanTerm1"></input>
+		<input id="txtMonthlyPymt1"></input>
+
+		<script src="vendor/qunit.js"></script>
+		<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+
+		<!-- Tested files -->
+		<script src="../../assets/feedback.js"></script>
+
+		<!-- Unit tests -->
+		<script src="app_tests.js"></script>
+	</div>
+</body>
+</html>
