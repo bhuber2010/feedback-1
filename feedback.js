@@ -8,7 +8,7 @@
 	$.feedback = function(options) {
 
 		var PADDING = 10;
-		var ZINDEX = 4000;
+		var ZINDEX = 40000;
 		var OFFSET = 2;
 		var ADD = 6;
 
