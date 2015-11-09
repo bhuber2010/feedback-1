@@ -21,12 +21,12 @@
 			</div>
 		</main>
 
-		<script src="http://code.jquery.com/jquery-latest.min.js"></script>
-		<script src="feedback.js"></script>
+		<script src="vendor/jquery.js"></script>
+		<script src="feedback.min.js"></script>
 		<script type="text/javascript">
 			document.addEventListener('DOMContentLoaded',
 				function () {
-				$.feedback({
+				jQuery.feedback({
 					ajaxURL: 'example-listener.php',
 					html2canvasURL: 'vendor/html2canvas.js',
 					onClose: function() { window.location.reload(); }
