@@ -6,7 +6,7 @@
 		<title></title>
 		<meta name="description" content="">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<link rel="stylesheet" href="feedback.css" />
+		<link rel="stylesheet" href="dist/assets/css/feedback.min.css" />
 
 	</head>
 	<body>
@@ -21,14 +21,14 @@
 			</div>
 		</main>
 
-		<script src="vendor/jquery.js"></script>
-		<script src="feedback.min.js"></script>
+		<script src="assets/js/vendor/jquery.js"></script>
+		<script src="dist/assets/js/feedback.min.js"></script>
 		<script type="text/javascript">
 			document.addEventListener('DOMContentLoaded',
 				function () {
 				jQuery.feedback({
 					ajaxURL: 'example-listener.php',
-					html2canvasURL: 'vendor/html2canvas.js',
+					html2canvasURL: 'assets/js/vendor/html2canvas.js',
 					onClose: function() { window.location.reload(); }
 				});
 			}, false);

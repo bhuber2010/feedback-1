@@ -103,10 +103,9 @@ module.exports = function (grunt) {
 			},
 			all: [
 				'Gruntfile.js',
-				'*.js',
-				'!*.min.js',
-				'!vendor/*',
-				// 'tests/qunit/*.js',
+				'assets/js/*.js',
+				'!assets/jsvendor/*',
+				'!dist/js/*.js',
 				'!tests/qunit/vendor/*',
 				'.jshintrc'
 			]
@@ -130,10 +129,10 @@ module.exports = function (grunt) {
 			},
 			files: {
 				expand: true,
-				cwd: "./",
-				src: ["*.less", "!_*.less"],
-				dest: "./",
-				ext: ".css"
+				cwd: 'assets/less/',
+				src: ['*.less', '!_*.less'],
+				dest: 'assets/css/',
+				ext: '.css'
 			}
 		},
 
@@ -141,10 +140,8 @@ module.exports = function (grunt) {
 			options: {
 				sourcemap: true
 			},
-			dist: {
-				files: {
-					'*.css': '*.min.css'
-				}
+			files: {
+				'*.css': '*.min.css'
 			}
 		},
 
@@ -157,7 +154,11 @@ module.exports = function (grunt) {
 				]
 			},
 			dist: {
-				src: '*.css'
+				expand: true,
+				cwd: 'assets/css/',
+				src: ['*.css', '!_*.css'],
+				dest: 'dist/assets/css/',
+				ext: '.min.css'
 			}
 		},
 
@@ -168,9 +169,9 @@ module.exports = function (grunt) {
 			js: {
 				files: [{
 					expand: true,
-					cwd: '',
-					src: ['*.js','*.min.js','!Gruntfile.js'],
-					dest: '',
+					cwd: 'assets/js/',
+					src: ['*.js', '!_*.js'],
+					dest: 'dist/assets/js/',
 					ext: '.min.js'
 				}]
 			}
@@ -266,7 +267,7 @@ module.exports = function (grunt) {
 		watch: {
 			less: {
 				files: [
-					'*.less'
+					'assets/less/*.less'
 				],
 				tasks: ['build:css']
 			},
