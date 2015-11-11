@@ -136,15 +136,23 @@ module.exports = function (grunt) {
 			}
 		},
 
+		cssmin: {
+			dist: {
+				files: {
+					'dist/assets/css/feedback.min.css': [
+						'assets/css/*.css',
+						'!assets/css/_*.css'
+					]
+				}
+			}
+		},
+
 		postcss: {
 			options: {
 				browsers: supportedBrowsers,
 				map: true,
 				processors: [
-					require( 'cssnano' )({
-						zindex: false,
-						sourcemap: true
-					})
+					require( 'autoprefixer' ) ({ browsers: supportedBrowsers })
 				],
 				zindex: false
 			},
@@ -152,8 +160,7 @@ module.exports = function (grunt) {
 				expand: true,
 				cwd: 'assets/css/',
 				src: ['*.css', '!_*.css'],
-				dest: 'dist/assets/css/',
-				ext: '.min.css'
+				dest: 'assets/css/'
 			}
 		},
 
@@ -330,7 +337,8 @@ module.exports = function (grunt) {
 		grunt.loadNpmTasks('grunt-postcss');
 		grunt.loadNpmTasks('grunt-banner');
 		grunt.loadNpmTasks('grunt-csscomb');
-		grunt.task.run('compile:css', 'postcss', 'usebanner', 'csscomb:dist');
+		grunt.loadNpmTasks('grunt-contrib-cssmin');
+		grunt.task.run('compile:css', 'postcss', 'usebanner', 'csscomb:dist', 'cssmin:dist');
 	});
 	grunt.registerTask('build:js', [], function() {
 		grunt.loadNpmTasks('grunt-contrib-uglify');
