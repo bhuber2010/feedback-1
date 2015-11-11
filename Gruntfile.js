@@ -136,22 +136,17 @@ module.exports = function (grunt) {
 			}
 		},
 
-		cssnano: {
-			options: {
-				sourcemap: true
-			},
-			files: {
-				'*.css': '*.min.css'
-			}
-		},
-
 		postcss: {
 			options: {
+				browsers: supportedBrowsers,
 				map: true,
 				processors: [
-					require( 'autoprefixer' )( { browsers: supportedBrowsers } ),
-					require( 'cssnano' )() // minify the result
-				]
+					require( 'cssnano' )({
+						zindex: false,
+						sourcemap: true
+					})
+				],
+				zindex: false
 			},
 			dist: {
 				expand: true,
@@ -203,9 +198,9 @@ module.exports = function (grunt) {
 			dynamic: {
 				files: [{
 					expand: true,
-					cwd: '/',
-					src: ['**/*.{png,jpg,gif}'],
-					dest: '/'
+					cwd: 'assets/images/',
+					src: ['*.{png,jpg,gif}'],
+					dest: 'dist/assets/images/'
 				}]
 			}
 		},

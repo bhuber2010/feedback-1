@@ -1,5 +1,5 @@
 // calc_tests.js
-jQuery( function() {
+$( function() {
 	module( 'app' );
 
 	QUnit.test( "write some tests", function( assert ) {

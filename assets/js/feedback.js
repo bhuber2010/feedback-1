@@ -98,6 +98,7 @@
 
 				if(settings.isDraggable) {
 					$('#feedback-highlighter').on('mousedown', function(e) {
+						console.log('mousedown');
 						var $d = $(this).addClass('feedback-draggable'),
 							drag_h 	= $d.outerHeight(),
 							drag_w 	= $d.outerWidth(),
@@ -558,34 +559,34 @@
 			});
 		}
 
-		// function close() {
-		// 	var canDraw = false;
-		// 	$(document).off('mouseenter mouseleave', '.feedback-helper');
-		// 	$(document).off('mouseup keyup');
-		// 	$(document).off('mousedown', '.feedback-setblackout');
-		// 	$(document).off('mousedown', '.feedback-sethighlight');
-		// 	$(document).off('mousedown click', '#feedback-close');
-		// 	$(document).off('mousedown', '#feedback-canvas');
-		// 	$(document).off('click', '#feedback-highlighter-next');
-		// 	$(document).off('click', '#feedback-highlighter-back');
-		// 	$(document).off('click', '#feedback-welcome-next');
-		// 	$(document).off('click', '#feedback-overview-back');
-		// 	$(document).off('mouseleave', 'body');
-		// 	$(document).off('mouseenter', '.feedback-helper');
-		// 	$(document).off('selectstart dragstart', document);
-		// 	$('#feedback-module').off('click', '.feedback-wizard-close,.feedback-close-btn');
-		// 	$(document).off('click', '#feedback-submit');
-		//
-		// 	if (settings.highlightElement) {
-		// 		$(document).off('click', '#feedback-canvas');
-		// 		$(document).off('mousemove', '#feedback-canvas');
-		// 	}
-		// 	$('[data-highlighted="true"]').removeAttr('data-highlight-id').removeAttr('data-highlighted');
-		// 	$('#feedback-module').remove();
-		// 	$('.feedback-btn').show();
-		//
-		// 	settings.onClose.call(this);
-		// }
+		function close() {
+			var canDraw = false;
+			$(document).off('mouseenter mouseleave', '.feedback-helper');
+			$(document).off('mouseup keyup');
+			$(document).off('mousedown', '.feedback-setblackout');
+			$(document).off('mousedown', '.feedback-sethighlight');
+			$(document).off('mousedown click', '#feedback-close');
+			$(document).off('mousedown', '#feedback-canvas');
+			$(document).off('click', '#feedback-highlighter-next');
+			$(document).off('click', '#feedback-highlighter-back');
+			$(document).off('click', '#feedback-welcome-next');
+			$(document).off('click', '#feedback-overview-back');
+			$(document).off('mouseleave', 'body');
+			$(document).off('mouseenter', '.feedback-helper');
+			$(document).off('selectstart dragstart', document);
+			$('#feedback-module').off('click', '.feedback-wizard-close,.feedback-close-btn');
+			$(document).off('click', '#feedback-submit');
+
+			if (settings.highlightElement) {
+				$(document).off('click', '#feedback-canvas');
+				$(document).off('mousemove', '#feedback-canvas');
+			}
+			$('[data-highlighted="true"]').removeAttr('data-highlight-id').removeAttr('data-highlighted');
+			$('#feedback-module').remove();
+			$('.feedback-btn').show();
+
+			settings.onClose.call(this);
+		}
 
 		function redraw(ctx, border) {
 			border = typeof border !== 'undefined' ? border : true;
